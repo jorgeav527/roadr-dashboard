@@ -2,6 +2,7 @@ import dash
 from flask import Flask
 from flask.helpers import get_root_path
 from flask_login import login_required
+import dash_bootstrap_components as dbc
 
 from config import BaseConfig
 
@@ -33,6 +34,7 @@ def register_dashapps(app):
         url_base_pathname="/dashboard-company/",
         assets_folder=get_root_path(__name__) + "/dashboard/assets/",
         meta_tags=[meta_viewport],
+        external_stylesheets=[dbc.themes.CYBORG, dbc.icons.BOOTSTRAP],
     )
 
     with app.app_context():

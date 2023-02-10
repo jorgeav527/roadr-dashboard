@@ -1,26 +1,12 @@
 from datetime import datetime as dt
 
-from dash import Input, Output, State
+from dash import Input, Output, State, html
 from flask_login import current_user
 import pandas_datareader as pdr
 import plotly.graph_objects as go
 
 
 def register_callbacks(dashapp):
-    # @dashapp.callback(
-    #     Output("my-graph", "figure"),
-    #     Input("my-dropdown", "value"),
-    #     State("user-store", "data"),
-    # )
-    # def update_graph(selected_dropdown_value, data):
-    #     df = pdr.get_data_yahoo(
-    #         selected_dropdown_value, start=dt(2017, 1, 1), end=dt.now()
-    #     )
-    #     return {
-    #         "data": [{"x": df.index, "y": df.Close}],
-    #         "layout": {"margin": {"l": 40, "r": 0, "t": 20, "b": 30}},
-    #     }
-
     @dashapp.callback(
         Output("user-store", "data"),
         Input("dropdown", "value"),
@@ -45,3 +31,21 @@ def register_callbacks(dashapp):
             )
         )
         return fig
+
+    @dashapp.callback(Output("page-content", "children"), [Input("url", "pathname")])
+    def render_page_content(pathname):
+        if pathname == "/":
+            return html.P("This is the content of the home page!")
+        elif pathname == "/page-1":
+            return html.P("This is the content of page 1. Yay!")
+        elif pathname == "/page-2":
+            return html.P("Oh cool, this is page 2!")
+        # If the user tries to reach a different page, return a 404 message
+        return html.Div(
+            [
+                html.H1("404: Not found", className="text-danger"),
+                html.Hr(),
+                html.P(f"The pathname {pathname} was not recognised..."),
+            ],
+            className="p-3 bg-light rounded-3",
+        )

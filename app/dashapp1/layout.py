@@ -1,10 +1,8 @@
 from dash import dcc
 from dash import html
 import pandas as pd
-import plotly.express as px
 import pymongo
-from bson.objectid import ObjectId
-from flask_login import current_user
+import dash_bootstrap_components as dbc
 
 # # Connect to server on the cloud
 # client = pymongo.MongoClient(
@@ -23,11 +21,44 @@ from flask_login import current_user
 # testing = collection.find()
 # print(list(testing))
 
-layout = html.Div(
+SIDEBAR_STYLE = {
+    "position": "fixed",
+    "top": 0,
+    "left": 0,
+    "bottom": 0,
+    "width": "8rem",
+    "padding": "2rem 1rem",
+    "border-right": "1px solid #f8f9fa",
+}
+
+CONTENT_STYLE = {
+    "margin-left": "10rem",
+    "margin-right": "2rem",
+    "padding": "2rem 1rem",
+}
+
+sidebar = html.Div(
+    [
+        html.H4("Roadr", className=""),
+        html.Hr(),
+        html.P("", className="lead"),
+        dbc.Nav(
+            [
+                dbc.NavLink("Home", href="/", active="exact"),
+                dbc.NavLink("Page 1", href="/page-1", active="exact"),
+                dbc.NavLink("Page 2", href="/page-2", active="exact"),
+            ],
+            vertical=True,
+            pills=True,
+        ),
+    ],
+    style=SIDEBAR_STYLE,
+)
+
+content = html.Div(
     id="main",
     children=[
-        html.H1(id="username"),
-        html.H1("Stock Tickers"),
+        html.H4(id="username"),
         dcc.Dropdown(
             id="dropdown",
             options=["Gold", "MediumTurquoise", "LightGreen"],
@@ -37,4 +68,7 @@ layout = html.Div(
         dcc.Graph(id="graph"),
         dcc.Store(id="user-store"),
     ],
+    style=CONTENT_STYLE,
 )
+
+layout = html.Div([dcc.Location(id="url"), sidebar, content])
