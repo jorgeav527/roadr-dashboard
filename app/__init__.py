@@ -27,18 +27,22 @@ def register_dashapps(app):
         "name": "viewport",
         "content": "width=device-width, initial-scale=1, shrink-to-fit=no",
     }
+    dbc_css = (
+        "https://cdn.jsdelivr.net/gh/AnnMarieW/dash-bootstrap-templates/dbc.min.css"
+    )
 
     dashapp1 = dash.Dash(
         __name__,
         server=app,
-        url_base_pathname="/dashboard-company/",
-        assets_folder=get_root_path(__name__) + "/dashboard/assets/",
+        url_base_pathname="/dashboard-users/",
+        assets_folder=get_root_path(__name__) + "/static/assets",
         meta_tags=[meta_viewport],
-        external_stylesheets=[dbc.themes.CYBORG, dbc.icons.BOOTSTRAP],
+        external_stylesheets=[dbc.themes.CYBORG, dbc_css, dbc.icons.FONT_AWESOME],
+        suppress_callback_exceptions=True,
     )
 
     with app.app_context():
-        dashapp1.title = "Dashapp 1"
+        dashapp1.title = "Roadr Dash-Board"
         dashapp1.layout = layout
         register_callbacks(dashapp1)
 
